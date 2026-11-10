@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f5f2" />
+    <title>Inner Organism / p5.js Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=2" />
+  </head>
+  <body data-theme="light">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Inner Organism home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Inner Organism</span>
+      </a>
+      <div class="topbar-meta">
+        <span class="mono" id="clock">00:00:00</span>
+        <span class="status-dot" id="system-dot"></span>
+        <span id="system-status">simulation</span>
+      </div>
+      <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch color mode" title="Switch color mode">
+        <span aria-hidden="true">◐</span>
+      </button>
+    </header>
+
+    <main id="top" class="app-shell">
+      <section class="intro-row" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow"><span>01</span> / sensory field study</p>
+          <h1 id="page-title">Inner Organism</h1>
+        </div>
+        <p class="intro-copy">A living field where energy expands, stress bends, and comfort lets the body bloom. Turn the physical knobs and watch the system reorganize itself.</p>
+      </section>
+
+      <section class="workspace" aria-label="Inner Organism visualizer">
+        <div class="stage-column">
+          <div class="stage-frame">
+            <div class="stage-meta stage-meta-top">
+              <span class="mono">FIELD / 001</span>
+              <span class="mono" id="fps-readout">60 FPS</span>
+            </div>
+            <div id="canvas-holder" class="canvas-holder" aria-label="Generative organism visualization"></div>
+            <div class="stage-meta stage-meta-bottom">
+              <span class="mono" id="mode-readout">LIVE / SIM</span>
+              <span class="mono">P5.JS</span>
+            </div>
+          </div>
+          <div class="legend-row">
+            <div class="legend-item"><span class="legend-swatch accent-energy"></span><span>energy / expansion</span></div>
+            <div class="legend-item"><span class="legend-swatch accent-stress"></span><span>stress / turbulence</span></div>
+            <div class="legend-item"><span class="legend-swatch accent-comfort"></span><span>comfort / bloom</span></div>
+          </div>
+          <p class="interaction-hint">No Arduino? Drag on the field — left/right = energy, up/down = stress · scroll = comfort · click = reseed · or drag the bars on the right</p>
+        </div>
+
+        <aside class="control-column" aria-label="Organism controls">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow"><span>02</span> / live parameters</p>
+              <h2>Vital signs</h2>
+            </div>
+            <span class="signal-label mono"><span class="signal-dot"></span><span id="signal-label">SIM</span></span>
+          </div>
+
+          <div class="metrics" id="metrics">
+            <article class="metric" data-metric="energy">
+              <div class="metric-topline"><span class="metric-index">A0</span><span class="metric-name">Energy</span><span class="metric-value mono" id="energy-value">62%</span></div>
+              <div class="metric-track"><span class="metric-fill" id="energy-fill"></span><span class="metric-tick tick-25"></span><span class="metric-tick tick-50"></span><span class="metric-tick tick-75"></span></div>
+              <p class="metric-note">reach / body charge</p>
+            </article>
+            <article class="metric" data-metric="stress">
+              <div class="metric-topline"><span class="metric-index">A1</span><span class="metric-name">Stress</span><span class="metric-value mono" id="stress-value">28%</span></div>
+              <div class="metric-track"><span class="metric-fill" id="stress-fill"></span><span class="metric-tick tick-25"></span><span class="metric-tick tick-50"></span><span class="metric-tick tick-75"></span></div>
+              <p class="metric-note">bend / membrane tension</p>
+            </article>
+            <article class="metric" data-metric="comfort">
+              <div class="metric-topline"><span class="metric-index">A2</span><span class="metric-name">Comfort</span><span class="metric-value mono" id="comfort-value">71%</span></div>
+              <div class="metric-track"><span class="metric-fill" id="comfort-fill"></span><span class="metric-tick tick-25"></span><span class="metric-tick tick-50"></span><span class="metric-tick tick-75"></span></div>
+              <p class="metric-note">color / softness bias</p>
+            </article>
+          </div>
+
+          <div class="parameter-grid">
+            <div class="mini-stat"><span class="mini-label">phase</span><strong class="mono" id="phase-value">0.48π</strong></div>
+            <div class="mini-stat"><span class="mini-label">nodes</span><strong class="mono" id="node-value">24</strong></div>
+            <div class="mini-stat"><span class="mini-label">pulse</span><strong class="mono" id="pulse-value">1.7 Hz</strong></div>
+            <div class="mini-stat"><span class="mini-label">density</span><strong class="mono" id="density-value">0.74</strong></div>
+          </div>
+
+          <div class="actions">
+            <button class="primary-button" id="connect-button" type="button"><span class="button-symbol" aria-hidden="true">↗</span><span id="connect-label">Connect Arduino</span></button>
+            <button class="secondary-button" id="simulate-button" type="button"><span class="button-symbol" aria-hidden="true">∿</span><span id="simulate-label">Pause simulation</span></button>
+          </div>
+
+          <div class="console-block">
+            <div class="console-topline"><span class="eyebrow"><span>03</span> / serial monitor</span><span class="mono" id="baud-readout">9600 BAUD</span></div>
+            <div class="console-output" id="console-output" aria-live="polite"><span class="console-muted">waiting for input</span></div>
+          </div>
+
+          <div class="footer-note">
+            <span class="mono">3 POTENTIOMETERS / 1 BODY</span>
+            <span>Move slowly. Notice what changes first.</span>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.7/lib/p5.min.js"></script>
+    <script src="sketch.js?v=2"></script>
+  </body>
+</html>
